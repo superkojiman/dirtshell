@@ -19,7 +19,7 @@ cookie=""
  
 while getopts "c:p:s:u:f:" OPT; do
     case $OPT in
-        c) cookie="-b ${OPTARG}"
+        c) cookie="-b ${OPTARG}";;
         p) prefix=$OPTARG;;
         s) suffix=$OPTARG;;
         u) url=$OPTARG;;
